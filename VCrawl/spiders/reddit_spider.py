@@ -4,11 +4,12 @@ import praw
 
 class RedditSpider(Spider):
     name = 'reddit'
-    # allowed_domains = ['reddit.com']
-    # start_urls = ['https://www.reddit.com/r/funnyvideos/']
+    allowed_domains = ['reddit.com']
     reddit = praw.Reddit("bot1", user_agent="script bot agent")
-    for item in reddit.user.me().saved(limit=None):
-        print(item)
+    for submission in reddit.user.me().saved(limit=None):
+        print(submission.title)
+        print(submission.is_video)
+        print(submission.media['reddit_video']['hls_url'])
 
 
 def parse(self, response):
