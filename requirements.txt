@@ -1,3 +1,2 @@
-Scrapy==2.6.1
 praw==7.5.0
 ffmpeg-python
