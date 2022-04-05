@@ -13,7 +13,7 @@ class RedditCrawler:
 
     def crawl(self):
         for submission in self.submissions:
-            if submission.is_video:
+            if submission.is_video and submission.upvote_ratio >= 0.8:
                 id = submission.id
                 subreddit = str(submission.subreddit)
                 title = submission.title
@@ -45,5 +45,19 @@ class RedditSaved(RedditCrawler):
         super().crawl()
 
 
+class RedditFunnyVideos(RedditCrawler):
+
+    def __init__(self, subreddit):
+        self.subreddit = subreddit
+        super().__init__()
+
+    def crawl(self, count=None):
+        self.submissions = self.reddit.subreddit(
+            self.subreddit).hot(limit=count)
+        super().crawl()
+
+
 crawler = RedditSaved()
 crawler.crawl()
+crawler = RedditFunnyVideos('funnyvideos')
+crawler.crawl(100)
