@@ -15,7 +15,8 @@ class RedditDB:
             score INTEGER,
             upvote_ratio DECIMAL(1,2),
             hls_url VARCHAR(512),
-            datetime DATETIME,
+            export_count INTEGER,
+            create_datetime DATETIME,
             CONSTRAINT submission_pk PRIMARY KEY (submission_id))'''
     table_exist = """SELECT count(*) FROM sqlite_master
         WHERE type='table' AND name='{table_name}';"""
@@ -30,7 +31,7 @@ class RedditDB:
 
     def create(self, record):
         self.cur.execute(
-            "insert or ignore into reddit values (?,?,?,?,?,?,?,?,?,?,?,?)",
+            "insert or ignore into reddit values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
             record)
         self.conn.commit()
 

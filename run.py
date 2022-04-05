@@ -27,7 +27,7 @@ class RedditCrawler:
                 hls_url = submission.media['reddit_video']['hls_url']
                 hls_url = hls_url.split(".m3u8")[0] + '.m3u8'
                 record = (id, subreddit, title, link_flair_text, author, url,
-                          duration, over_18, score, upvote_ratio, hls_url,
+                          duration, over_18, score, upvote_ratio, hls_url, 0,
                           datetime.datetime.now())
                 self.db.create(record)
 
