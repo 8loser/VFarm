@@ -1,4 +1,5 @@
 import argparse
+import datetime
 from reddit_db import RedditDB
 import subprocess
 
@@ -41,7 +42,7 @@ class ExportVideo:
         url_list = []
         id_list = []
         duration = 0
-
+        file_name = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         for row in rows:
             id_list.append(row[0])
             duration += row[1]
@@ -54,10 +55,11 @@ class ExportVideo:
             if duration > self.total_length:
                 break
 
-        f = open('video.list', 'w')
+        f = open(file_name + '.list', 'w')
         f.writelines(url_list)
         f.close()
-        subprocess.call(['sh', './make.sh', 'video.list', 'out.mp4'])
+        subprocess.call(
+            ['sh', './make.sh', file_name + '.list', file_name + '.mp4'])
         reddit_db.update(id_list)
 
 
