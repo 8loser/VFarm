@@ -13,7 +13,9 @@ class RedditCrawler:
 
     def crawl(self):
         for submission in self.submissions:
-            if submission.is_video and submission.upvote_ratio >= 0.8:
+            if submission.is_video and \
+                submission.upvote_ratio >= 0.8 and submission.score > 250:
+
                 id = submission.id
                 subreddit = str(submission.subreddit)
                 title = submission.title
@@ -60,4 +62,4 @@ class RedditFunnyVideos(RedditCrawler):
 crawler = RedditSaved()
 crawler.crawl()
 crawler = RedditFunnyVideos('funnyvideos')
-crawler.crawl(100)
+crawler.crawl(1000)

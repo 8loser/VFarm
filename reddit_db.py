@@ -17,7 +17,7 @@ class RedditDB:
             hls_url VARCHAR(512),
             export_count INTEGER,
             create_datetime DATETIME,
-            CONSTRAINT submission_pk PRIMARY KEY (submission_id))'''
+            CONSTRAINT submiussion_pk PRIMARY KEY (submission_id))'''
     table_exist = """SELECT count(*) FROM sqlite_master
         WHERE type='table' AND name='{table_name}';"""
 
@@ -35,11 +35,29 @@ class RedditDB:
             record)
         self.conn.commit()
 
+    def get_url_by_flair(self, flair=None):
+        query = 'select submission_id,duration,hls_url \
+            from reddit where export_count=0'
+
+        if flair:
+            query += ' and link_flair_text in (' + ','.join(
+                str("\"" + e + "\"") for e in flair) + ")"
+        rows = self.cur.execute(query).fetchall()
+        return rows
+
     def read(self):
         pass
 
-    def update(self):
-        pass
+    def update(self, id_list):
+        id_string = ','.join("\"" + id + "\"" for id in id_list)
+        sql = '''UPDATE reddit
+                SET export_count = export_count+1
+                WHERE submission_id in (''' + id_string + ''')'''
+
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        self.conn.commit()
+        self.conn.close()
 
     def delete(self):
         pass
