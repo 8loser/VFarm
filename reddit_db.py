@@ -28,6 +28,11 @@ class RedditDB:
             self.table_exist.format(table_name="reddit")).fetchone()[0]
         if table_exist == 0:
             self.cur.execute(self.table_create.format(table_name="reddit"))
+        # 預設查詢條件
+        self.query_string = '''
+            select submission_id,duration,hls_url
+            from reddit
+            where export_count=0 and over_18=False'''
 
     def create(self, record):
         self.cur.execute(
@@ -35,18 +40,17 @@ class RedditDB:
             record)
         self.conn.commit()
 
-    def get_url_by_flair(self, flair=None):
-        query = 'select submission_id,duration,hls_url \
-            from reddit where export_count=0'
-
+    def set_flair(self, flair):
         if flair:
-            query += ' and link_flair_text in (' + ','.join(
+            self.query_string += ' and link_flair_text in (' + ','.join(
                 str("\"" + e + "\"") for e in flair) + ")"
-        rows = self.cur.execute(query).fetchall()
-        return rows
 
-    def read(self):
-        pass
+    def set_duration(self, length):
+        self.query_string += ' and duration<' + str(length)
+
+    def query(self):
+        rows = self.cur.execute(self.query_string).fetchall()
+        return rows
 
     def update(self, id_list):
         id_string = ','.join("\"" + id + "\"" for id in id_list)
@@ -58,6 +62,3 @@ class RedditDB:
         cur.execute(sql)
         self.conn.commit()
         self.conn.close()
-
-    def delete(self):
-        pass
