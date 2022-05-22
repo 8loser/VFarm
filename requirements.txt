@@ -1,7 +1,10 @@
-praw==7.6.0
+# VSCode 使用套件
 yapf
 flake8
 pylint
+# 專案必須
+praw==7.6.0
+pymongo
 # google-api-python-client
 # google-auth
 # google-auth-oauthlib
