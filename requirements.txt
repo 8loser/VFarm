@@ -1,2 +1,7 @@
-praw==7.5.0
-ffmpeg-python
+praw==7.6.0
+# google-api-python-client
+# google-auth
+# google-auth-oauthlib
+# google-auth-httplib2
+# gdata
+# selenium
