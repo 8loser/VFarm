@@ -1,9 +1,8 @@
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.231.1/containers/python-3/.devcontainer/base.Dockerfile
-
-# [Choice] Python version (use -bullseye variants on local arm64/Apple Silicon): 3, 3.10, 3.9, 3.8, 3.7, 3.6, 3-bullseye, 3.10-bullseye, 3.9-bullseye, 3.8-bullseye, 3.7-bullseye, 3.6-bullseye, 3-buster, 3.10-buster, 3.9-buster, 3.8-buster, 3.7-buster, 3.6-buster
 ARG VARIANT="3.10"
+# [Choice] Python version (use -bullseye variants on local arm64/Apple Silicon): 3, 3.10, 3.9, 3.8, 3.7, 3.6, 3-bullseye, 3.10-bullseye, 3.9-bullseye, 3.8-bullseye, 3.7-bullseye, 3.6-bullseye, 3-buster, 3.10-buster, 3.9-buster, 3.8-buster, 3.7-buster, 3.6-buster
 # FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
-FROM python:${VARIANT}-alpine
+FROM python:${VARIANT}
 
 # Alpine 沒有 apt-get, 要用 apk
 # RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -11,10 +10,9 @@ FROM python:${VARIANT}-alpine
 #     && rm -rf /var/lib/apt/lists/*
 
 RUN apk update && apk upgrade \
-    && apk add --no-cache --virtual .build-deps \
+    && apk add --no-cache \
     ffmpeg \
-    && rm -rf /var/cache/apk/* \
-    && apk del .build-deps
+    && rm -rf /var/cache/apk/*
 
 # 更新 pip
 RUN pip install --upgrade pip
