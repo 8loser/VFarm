@@ -1,4 +1,7 @@
 praw==7.6.0
+yapf
+flake8
+pylint
 # google-api-python-client
 # google-auth
 # google-auth-oauthlib
